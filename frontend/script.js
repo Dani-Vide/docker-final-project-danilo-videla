@@ -10,11 +10,13 @@ document.getElementById("loadButton").addEventListener("click", async () => {
   });
 });
 document.getElementById("unloadButton").addEventListener("click", async () => {
- 
+    const ename = document.getElementById("ename").value;
+    const response = await fetch("/api/add/" + ename);
+
 });
 document.getElementById("greetButton").addEventListener("click", async () => {
-    const response = await fetch("/api/greet/danilo");
-    const saludo = JSON.stringify(response)
-    document.getElementById("gname").value = saludo;
-    const gname = document.getElementById("gname").value;  
+    const gname = document.getElementById("gname").value;
+    const response = await fetch("/api/greet/" + gname);
+    const saludo = await response.json();
+    document.getElementById("saludo").value = saludo.message;
 });

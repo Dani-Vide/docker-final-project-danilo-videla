@@ -10,7 +10,7 @@ app.use(express.json());
 
 // Routes
 app.get("/api/ping", (req, res) => res.json({ message: "pong" }));
-app.get("/api/greet/:name", (req, res) => res.text("¡Hola, " + req.params.name + "!"));
+app.get("/api/greet/:name", (req, res) => res.json({ message: "¡Hola, " + req.params.name + "!" }));
 app.get("/api/students", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM students");
@@ -20,6 +20,11 @@ app.get("/api/students", async (req, res) => {
     res.status(500).send("DB error");
   }
 });
+app.post("/api/add/:name", (req, res) => {
+    db.insert(students: "name")
+    res.json({ message: "El nombre " + req.params.name + " a sido agregado" })
+});
+
 
 // Start the server
 app.listen(port, () => console.log(`App running on port ${port}`));
