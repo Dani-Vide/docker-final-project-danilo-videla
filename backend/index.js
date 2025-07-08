@@ -10,6 +10,7 @@ app.use(express.json());
 
 // Routes
 app.get("/api/ping", (req, res) => res.json({ message: "pong" }));
+app.get("/api/greet/:name", (req, res) => res.text("¡Hola, " + req.params.name + "!"));
 app.get("/api/students", async (req, res) => {
   try {
     const result = await db.query("SELECT * FROM students");
@@ -22,3 +23,4 @@ app.get("/api/students", async (req, res) => {
 
 // Start the server
 app.listen(port, () => console.log(`App running on port ${port}`));
+    
