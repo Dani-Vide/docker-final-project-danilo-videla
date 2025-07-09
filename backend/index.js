@@ -3,7 +3,7 @@ const db = require("./db");
 
 // Define express app
 const app = express();
-const port = 3000;
+const port = 4000;
 
 // Middleware to parse JSON requests
 app.use(express.json());
@@ -13,23 +13,19 @@ app.get("/api/ping", (req, res) => res.json({ message: "pong" }));
 app.get("/api/greet/:name", (req, res) => res.json({ message: "¡Hola, " + req.params.name + "!" }));
 app.get("/api/students", async (req, res) => {
   try {
-    const result = await db.query("SELECT * FROM students");
-    res.json(result.rows);
+      const result = await db.query("SELECT * FROM students");
+    res.json(result.rows);  
   } catch (err) {
     console.error(err);
     res.status(500).send("DB error");
   }
 });
-app.get("/students/:name", (req, res) => {
-    const nstu = {name: req.params.name}
-    db.query("INSERT INTO students(name) VALUES (?)", [nstu]);
-    try {
-        const result = await db.query("SELECT * FROM students");
-        res.json(result.rows);
-    } catch (err) {
-        console.error(err);
-        res.status(500).send("DB error");
-    }
+app.post("/api/students", async (req, res) => {
+    const { name } = req.body;
+    const result = await db.query(
+        "INSERT INTO students (name) VALUES($1) RETURNING id, name", [name]
+    );
+    res.json({ message: "id = " + result.rows[0].id + "  nombre = " + result.rows[0].name})
 });
 
 
