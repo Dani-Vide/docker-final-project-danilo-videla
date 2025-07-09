@@ -20,9 +20,16 @@ app.get("/api/students", async (req, res) => {
     res.status(500).send("DB error");
   }
 });
-app.post("/api/add/:name", (req, res) => {
-    db.insert(students: "name")
-    res.json({ message: "El nombre " + req.params.name + " a sido agregado" })
+app.get("/students/:name", (req, res) => {
+    const nstu = {name: req.params.name}
+    db.query("INSERT INTO students(name) VALUES (?)", [nstu]);
+    try {
+        const result = await db.query("SELECT * FROM students");
+        res.json(result.rows);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send("DB error");
+    }
 });
 
 
